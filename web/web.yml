@@ -1,0 +1,14 @@
+---
+- name: install webserver and update front end content
+  become: yes
+  tasks:
+    - name: install httpd
+      yum: name=httpd state=latest
+    - name: enable httpd service
+      service: name=httpd state=started enabled=yes
+    - name: download the file
+      get_url: url:https://github.com/nagu3693/html/raw/main/index.html.zip dest=/tmp/index.html.zip
+    - name: unarchive the content
+      unarchive: remote_src=/tmp/index.html.zip dest=/var/www/hmtl/
+    - name: mv files on the remote server
+      copy: remote_src=True src=/var/www/html/index.html.txt dest=/var/www/html/index.html     
