@@ -1,0 +1,12 @@
+---
+- hosts: localhost
+  tasks:
+    - name: download transaction_list
+      block:
+        - get_url: url=http://apps.133t.com/transaction_list dest=/home/ansible/transaction_list
+        - replace: path=/home/ansible/transaction_list regexp="#BLANKLINE" replace='\n'
+        - debug: msg="file is downloaded"
+      rescue:
+        - debug: msg="133t.com appears to be down"
+      always:
+        - debug: msg="attempt completed"
